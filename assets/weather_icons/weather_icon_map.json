@@ -1,0 +1,121 @@
+{
+  "description": "Mausam Mitra Weather Condition Icon Mapping (Transparent PNG Assets with WMO Code Support)",
+  "base_path": "assets/weather_icons/",
+  "format": "PNG (with alpha transparency outside border)",
+  "conditions": {
+    "clear": {
+      "name": "Clear",
+      "category": "standard",
+      "file": "clear.png",
+      "wmo_codes": [0]
+    },
+    "mainly_clear": {
+      "name": "Mainly Clear",
+      "category": "standard",
+      "file": "mainly_clear.png",
+      "wmo_codes": [1]
+    },
+    "partly_cloudy": {
+      "name": "Partly Cloudy",
+      "category": "standard",
+      "file": "partly_cloudy.png",
+      "wmo_codes": [2]
+    },
+    "generally_cloudy": {
+      "name": "Generally Cloudy / Overcast",
+      "category": "standard",
+      "file": "generally_cloudy.png",
+      "wmo_codes": [3]
+    },
+    "drizzle": {
+      "name": "Drizzle",
+      "category": "precipitation",
+      "file": "drizzle.png",
+      "wmo_codes": [51, 53, 55, 56, 57]
+    },
+    "moderate_rain": {
+      "name": "Moderate Rain",
+      "category": "precipitation",
+      "file": "moderate_rain.png",
+      "wmo_codes": [61, 63, 80, 81]
+    },
+    "heavy_rain": {
+      "name": "Heavy Rain",
+      "category": "precipitation",
+      "file": "heavy_rain.png",
+      "wmo_codes": [65, 82]
+    },
+    "thunderstorm": {
+      "name": "Thunderstorm with Rain",
+      "category": "precipitation",
+      "file": "thunderstorm.png",
+      "wmo_codes": [95, 96, 99]
+    },
+    "squall_winds": {
+      "name": "Squall / Gusty Winds",
+      "category": "precipitation",
+      "file": "squall_winds.png",
+      "wmo_codes": []
+    },
+    "shallow_fog": {
+      "name": "Shallow Fog",
+      "category": "winter_visibility",
+      "file": "shallow_fog.png",
+      "wmo_codes": [45]
+    },
+    "dense_fog": {
+      "name": "Dense Fog",
+      "category": "winter_visibility",
+      "file": "dense_fog.png",
+      "wmo_codes": [48]
+    },
+    "cold_wave": {
+      "name": "Cold Wave",
+      "category": "winter_visibility",
+      "file": "cold_wave.png",
+      "wmo_codes": []
+    },
+    "ground_frost": {
+      "name": "Ground Frost",
+      "category": "winter_visibility",
+      "file": "ground_frost.png",
+      "wmo_codes": []
+    },
+    "heat_wave": {
+      "name": "Heat Wave",
+      "category": "summer_heat",
+      "file": "heat_wave.png",
+      "wmo_codes": []
+    },
+    "severe_heat_wave": {
+      "name": "Severe Heat Wave",
+      "category": "summer_heat",
+      "file": "severe_heat_wave.png",
+      "wmo_codes": []
+    },
+    "dust_storm": {
+      "name": "Dust Storm / Andhi",
+      "category": "summer_heat",
+      "file": "dust_storm.png",
+      "wmo_codes": []
+    },
+    "haze": {
+      "name": "Haze / Smog",
+      "category": "summer_heat",
+      "file": "haze.png",
+      "wmo_codes": []
+    },
+    "cyclone": {
+      "name": "Cyclonic Storm",
+      "category": "extreme_weather",
+      "file": "cyclone.png",
+      "wmo_codes": []
+    },
+    "heavy_snowfall": {
+      "name": "Heavy Snowfall",
+      "category": "extreme_weather",
+      "file": "heavy_snowfall.png",
+      "wmo_codes": [71, 73, 75, 77, 85, 86]
+    }
+  }
+}
