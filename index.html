@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mausam Mitra — AI Personalized Weather Companion (MoES / IMD)</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+
+  <!-- ============================================================ -->
+  <!-- 1. CINEMATIC 2-STAGE MEGHA ONBOARDING MODAL                 -->
+  <!-- ============================================================ -->
+  <div id="onboardingModal" class="modal-backdrop">
+    <div class="onboarding-cinematic-stage" id="onboardingStage">
+      
+      <!-- Skip / Close Button -->
+      <button id="closeOnboardingBtn" class="modal-close-btn" title="Skip to Dashboard">&times;</button>
+      
+      <!-- Megha Main Showcase Unit -->
+      <div class="megha-hero-showcase" id="meghaHeroShowcase">
+        <div class="megha-cutout-frame">
+          <img id="modalMeghaImg" class="megha-stage-cutout" src="assets/avatar/megha_idle_transparent.png" alt="Megha Mausam Mitra" />
+          <div class="avatar-glow-ring"></div>
+        </div>
+
+        <!-- Speech & Greeting Bubble -->
+        <div class="megha-speech-container" id="meghaSpeechContainer">
+          <div class="speech-header-tag">
+            <span class="pulse-dot"></span>
+            <strong>मेघा (Megha) • AI Mausam Mitra</strong>
+            <div class="audio-bars" id="stageAudioBars">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <p id="modalSpeechText" class="speech-body-text">"नमस्ते! मैं मेघा हूँ, आपकी मौसम मित्र। मौसम मित्र में आपका स्वागत है!"</p>
+          
+          <!-- Active Voice Listening Pill (for farmers / voice persona selection) -->
+          <div class="voice-listening-indicator hidden" id="voiceListeningIndicator">
+            <div class="voice-pulse-ring">
+              <span class="mic-wave-icon">🎙️</span>
+            </div>
+            <div class="voice-status-text">
+              <strong>मेघा सुन रही हैं... (Listening)</strong>
+              <p>बोलकर बताएँ: <em>"मैं किसान हूँ"</em>, <em>"फिटनेस"</em>, <em>"ट्रैवल"</em> या <em>"कम्यूटर"</em></p>
+            </div>
+            <button id="retryVoiceSelectBtn" class="manual-mic-pill" title="Tap to Speak Again">
+              <span>🎙️</span> फिर से बोलें
+            </button>
+          </div>
+
+          <!-- Chrome file:// restriction notice -->
+          <div class="file-protocol-notice hidden" id="fileProtocolNotice">
+            <span class="notice-icon">💡</span>
+            <span class="notice-text">Chrome सुरक्षा के कारण <code>file://</code> पर माइक ब्लॉक करता है। आवाज़ से प्रोफ़ाइल चुनने के लिए <strong>run_app.bat</strong> चलाएँ (या नीचे सीधे कार्ड पर क्लिक करें)।</span>
+          </div>
+
+          <div class="stage-actions" id="stageActions">
+            <button id="startMeghaExperienceBtn" class="stage-primary-btn">
+              <span>🔊</span> सुनिए मेघा को (Listen to Megha)
+            </button>
+            <button id="skipToPersonasBtn" class="stage-skip-link">
+              सीधे प्रोफ़ाइल चुनें ➔
+            </button>
+            <button id="replayVoiceBtn" class="stage-replay-rect-btn hidden">
+              <span>🔄</span> आवाज़ दोबारा सुनें (Replay Guidance)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 Persona Choices (Stage 2 - Clean & Professional) -->
+      <div class="personas-reveal-panel hidden" id="personasRevealPanel">
+        <div class="panel-header">
+          <h3>अपना प्रोफ़ाइल चुनें (Select Your Persona)</h3>
+          <p>Ministry of Earth Sciences / IMD — <strong>बोलकर या क्लिक करके चुनें</strong></p>
+        </div>
+
+        <div class="personas-grid-container" id="onboardingPersonaGrid">
+          <button class="persona-choice-card active" data-persona="agriculture_gardeners">
+            <div class="choice-icon-wrap"><span class="choice-icon">🌾</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Agriculture & Gardeners</div>
+              <div class="choice-title-hi">किसान एवं बागवानी</div>
+              <div class="choice-tags">
+                <span class="choice-tag">मिट्टी की नमी</span>
+                <span class="choice-tag">वर्षा सलाह</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="health_conscious">
+            <div class="choice-icon-wrap"><span class="choice-icon">🌿</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Health-Conscious</div>
+              <div class="choice-title-hi">स्वास्थ्य एवं एक्यूआई</div>
+              <div class="choice-tags">
+                <span class="choice-tag">AQI स्तर</span>
+                <span class="choice-tag">परागकण व UV</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="fitness">
+            <div class="choice-icon-wrap"><span class="choice-icon">🏃</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Outdoor Fitness</div>
+              <div class="choice-title-hi">आउटडोर फिटनेस एवं रनिंग</div>
+              <div class="choice-tags">
+                <span class="choice-tag">रनिंग विंडो</span>
+                <span class="choice-tag">थर्मल कम्फर्ट</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="commuters">
+            <div class="choice-icon-wrap"><span class="choice-icon">🚗</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Daily Commuters</div>
+              <div class="choice-title-hi">दैनिक यात्री एवं ट्रैफ़िक</div>
+              <div class="choice-tags">
+                <span class="choice-tag">सड़क दृश्यता</span>
+                <span class="choice-tag">कोहरा अलर्ट</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="parents_families">
+            <div class="choice-icon-wrap"><span class="choice-icon">👨‍👩‍👧</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Parents & Families</div>
+              <div class="choice-title-hi">अभिभावक एवं परिवार</div>
+              <div class="choice-tags">
+                <span class="choice-tag">स्कूल ट्रांजिट</span>
+                <span class="choice-tag">बारिश चेतावनी</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="travelers">
+            <div class="choice-icon-wrap"><span class="choice-icon">✈️</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Travelers & Tourists</div>
+              <div class="choice-title-hi">यात्री एवं टूरिस्ट</div>
+              <div class="choice-tags">
+                <span class="choice-tag">उड़ान अलर्ट</span>
+                <span class="choice-tag">पैकिंग सलाह</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="beachgoers_surfers">
+            <div class="choice-icon-wrap"><span class="choice-icon">🏄</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Beachgoers & Surfers</div>
+              <div class="choice-title-hi">समुद्र तट एवं सर्फ़र्स</div>
+              <div class="choice-tags">
+                <span class="choice-tag">ज्वार-भाटा (Tides)</span>
+                <span class="choice-tag">समुद्री लहरें</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="persona-choice-card" data-persona="event_planners">
+            <div class="choice-icon-wrap"><span class="choice-icon">🎉</span></div>
+            <div class="choice-info">
+              <div class="choice-title-en">Event Planners</div>
+              <div class="choice-title-hi">इवेंट एवं आउटडोर आयोजन</div>
+              <div class="choice-tags">
+                <span class="choice-tag">वर्षा संभावना</span>
+                <span class="choice-tag">मौसम अनुकूलता</span>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <button id="applyPersonaBtn" class="confirm-persona-btn">
+          डैशबोर्ड खोलें (Open Dashboard) ➔
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- 2. TOP DYNAMIC CLIMATE HEADER BANNER                         -->
+  <!-- ============================================================ -->
+  <header id="climateHeader" class="climate-header" style="background-image: url('assets/climates/partly_cloudy.jpg');">
+    <div class="header-overlay"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+      <button id="drawerToggleBtn" class="icon-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <!-- City Search & Geocoding -->
+      <div class="location-search-container">
+        <span class="location-pin">📍</span>
+        <input type="text" id="citySearchInput" placeholder="Search City (e.g., Delhi, Patna, Madhepura)..." value="📍 लाइव लोकेशन (GPS)" autocomplete="off" />
+        <button id="searchBtn" class="search-action-btn">Search</button>
+        <div id="searchResultsDropdown" class="search-dropdown hidden"></div>
+      </div>
+
+      <div class="nav-right-actions">
+        <!-- Persona Quick Toggle / Switcher -->
+        <button id="personaSwitchBtn" class="persona-chip">
+          <span class="persona-chip-dot"></span>
+          <span id="activePersonaLabel">Health-conscious</span>
+          <span class="chip-arrow">▼</span>
+        </button>
+
+        <button id="generalViewBtn" class="general-view-btn" title="Toggle Standard General IMD View">
+          🌐 General View
+        </button>
+
+        <!-- Modern Bright / Dark Theme Switcher (MSN Style) -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Day (Bright) / Night Mode">
+          <span id="themeToggleIcon">☀️</span>
+          <span id="themeToggleLabel">Bright</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MSN-style Quick Cities Weather Bar -->
+    <div class="quick-cities-bar" id="quickCitiesBar">
+      <!-- Dedicated Live GPS Location Pill -->
+      <button class="city-pill-btn active gps-detected-pill" id="gpsCityPill" data-city="Live GPS" data-lat="28.6139" data-lon="77.2090" title="आपकी लाइव GPS लोकेशन">
+        <span class="city-name">📍 मेरी लोकेशन (GPS)</span>
+        <span class="city-weather-icon">🛰️</span>
+        <span class="city-temp">--°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Delhi" data-lat="28.6139" data-lon="77.2090">
+        <span class="city-name">Delhi</span>
+        <span class="city-weather-icon">☀️</span>
+        <span class="city-temp">34°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Mumbai" data-lat="19.0760" data-lon="72.8777">
+        <span class="city-name">Mumbai</span>
+        <span class="city-weather-icon">⛅</span>
+        <span class="city-temp">28°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Hyderabad" data-lat="17.3850" data-lon="78.4867">
+        <span class="city-name">Hyderabad</span>
+        <span class="city-weather-icon">☀️</span>
+        <span class="city-temp">32°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Bengaluru" data-lat="12.9716" data-lon="77.5946">
+        <span class="city-name">Bengaluru</span>
+        <span class="city-weather-icon">🌦️</span>
+        <span class="city-temp">28°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Darbhanga" data-lat="26.1542" data-lon="85.8918">
+        <span class="city-name">Darbhanga</span>
+        <span class="city-weather-icon">🌤️</span>
+        <span class="city-temp">32°</span>
+      </button>
+      <button class="city-pill-btn" data-city="Patna" data-lat="25.5941" data-lon="85.1376">
+        <span class="city-name">Patna</span>
+        <span class="city-weather-icon">☀️</span>
+        <span class="city-temp">33°</span>
+      </button>
+    </div>
+
+    <!-- Hero Weather Main Information -->
+    <div class="hero-weather-body">
+      <div class="hero-primary-info">
+        <div class="temp-condition-row">
+          <span id="heroTemp" class="hero-temp">28°C</span>
+          <div class="hero-condition-col">
+            <span id="heroCondition" class="hero-condition-text">Partly Cloudy</span>
+            <span id="heroFeelsLike" class="hero-subtext">Feels like 31°C • High: 33°C | Low: 22°C</span>
+          </div>
+        </div>
+
+        <div class="hero-quick-meta">
+          <span class="meta-tag" id="metaPrecip">🌧️ Rain: 15%</span>
+          <span class="meta-tag" id="metaWind">💨 Wind: 14 km/h</span>
+          <span class="meta-tag" id="metaHumidity">💧 Humidity: 62%</span>
+          <span class="meta-tag aqi-tag" id="metaAqi">🍃 AQI: 84 (Moderate)</span>
+        </div>
+      </div>
+
+      <!-- Megha Top Dialogue Card -->
+      <div class="hero-megha-card" id="heroMeghaCard">
+        <div class="megha-avatar-wrapper">
+          <img id="headerMeghaImg" class="megha-round-avatar" src="assets/avatar/avatar_badge.png" alt="Megha AI Avatar" />
+          <span class="megha-pulse-ring"></span>
+        </div>
+        <div class="hero-megha-content">
+          <div class="megha-title-row">
+            <span class="megha-name">मेघा (Megha)</span>
+            <span class="megha-badge-tag">AI Mausam Mitra</span>
+          </div>
+          <p id="headerMeghaSpeech" class="megha-dialogue">"Namaste! Aaj dhoop aur halki hawa rahegi. Outdoor activities ke liye mausam anukool hai!"</p>
+          <div class="megha-actions">
+            <button id="speakHeaderAdviceBtn" class="megha-listen-btn">🔊 Suniye</button>
+            <button id="openMeghaChatBtn" class="megha-chat-btn">💬 Baat Karein</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- 3. MAIN DASHBOARD CONTENT AREA                               -->
+  <!-- ============================================================ -->
+  <main class="main-dashboard-container">
+
+    <!-- Active Persona Banner -->
+    <section class="persona-focus-header">
+      <div class="focus-title-group">
+        <div class="focus-badge" id="focusPersonaBadge">🌿 Health-conscious Mode Active</div>
+        <h2 id="focusPersonaHeadline">High Priority Metrics for Respiratory & Skin Health</h2>
+        <p id="focusPersonaSubtext">As recommended by Ministry of Earth Sciences & IMD guidelines.</p>
+      </div>
+
+      <div class="view-toggle-pills">
+        <button class="view-pill active" id="viewPersonaPill">Personalized View</button>
+        <button class="view-pill" id="viewGeneralPill">General Overview</button>
+      </div>
+    </section>
+
+    <!-- Hourly Forecast Strip (Teammate Screenshot 2 inspired) -->
+    <section class="hourly-forecast-section" id="hourlyForecastSection">
+      <div class="section-title-row">
+        <div class="section-title-left">
+          <span class="section-badge">⏱️ 24-घंटे का प्रति घंटा पूर्वानुमान</span>
+          <h3 class="section-heading">Hourly Forecast</h3>
+        </div>
+        <span class="scroll-hint-label">👉 स्क्रॉल करें (Scroll)</span>
+      </div>
+      <div class="hourly-scroll-container" id="hourlyScrollContainer">
+        <!-- Dynamically rendered 24-hour cards -->
+      </div>
+    </section>
+
+    <!-- Dynamic Cards Grid (Filtered Strictly per Persona in PS 26076) -->
+    <div id="dashboardCardsGrid" class="cards-grid">
+
+      <!-- ================= 1. HEALTH-CONSCIOUS CARDS ================= -->
+      <!-- AQI Semi-Circular Gauge (Screenshot 2 style) -->
+      <div class="weather-card health-card" data-card="aqi" id="cardAqi">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🍃</span>
+            <h3>Air Quality Index (AQI)</h3>
+          </div>
+          <span class="card-badge moderate" id="cardAqiBadge">Moderate</span>
+        </div>
+        <div class="card-body aqi-body">
+          <div class="gauge-container">
+            <svg class="aqi-semi-gauge" viewBox="0 0 200 115">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="18" stroke-linecap="round" />
+              <path d="M 20 100 A 80 80 0 0 1 65 35" fill="none" stroke="#00e676" stroke-width="18" stroke-linecap="round" />
+              <path d="M 65 35 A 80 80 0 0 1 135 35" fill="none" stroke="#ffeb3b" stroke-width="18" />
+              <path d="M 135 35 A 80 80 0 0 1 180 100" fill="none" stroke="#ff5252" stroke-width="18" stroke-linecap="round" />
+              <line id="aqiGaugeNeedle" x1="100" y1="100" x2="65" y2="40" stroke="#ffffff" stroke-width="4" stroke-linecap="round" style="transform-origin: 100px 100px; transition: transform 0.8s ease;" />
+              <circle cx="100" cy="100" r="7" fill="#ffffff" />
+            </svg>
+            <div class="speedometer-value" id="cardAqiVal">125</div>
+            <div class="speedometer-label" id="cardAqiStatusText">Moderate</div>
+            <div class="speedometer-sub" id="cardAqiSub">PM2.5: 48 µg/m³ • PM10: 95 µg/m³</div>
+          </div>
+          <p class="card-advice" id="cardAqiAdvice">Asthma & allergy patients should wear masks during peak outdoor traffic.</p>
+        </div>
+      </div>
+
+      <!-- UV Index with Radial Burn Timer Ring (Screenshot 2 style) -->
+      <div class="weather-card health-card" data-card="uv" id="cardUv">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">☀️</span>
+            <h3>UV Index & Sun Protection</h3>
+          </div>
+          <span class="card-badge warning" id="cardUvBadge">Very High</span>
+        </div>
+        <div class="card-body uv-radial-body">
+          <div class="radial-uv-box">
+            <div class="radial-circle-gauge">
+              <svg viewBox="0 0 100 100" class="radial-svg">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="8" />
+                <circle id="uvRadialProgress" cx="50" cy="50" r="40" fill="none" stroke="#ff3d00" stroke-width="8" stroke-dasharray="251" stroke-dashoffset="65" stroke-linecap="round" />
+              </svg>
+              <div class="radial-center-text">
+                <span class="radial-sub">Burn in</span>
+                <strong class="radial-burn-time" id="cardUvBurnTime">15 Mins</strong>
+              </div>
+            </div>
+            <div class="radial-meta-col">
+              <div class="big-uv-number text-red" id="cardUvVal">8.2</div>
+              <span class="uv-rating-label" id="cardUvRating">VERY HIGH</span>
+              <span class="uv-action-tip">SPF 30+ sunscreen & protective eyewear recommended</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pollen & Allergen Count -->
+      <div class="weather-card health-card" data-card="pollen" id="cardPollen">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌸</span>
+            <h3>Pollen & Allergen Count</h3>
+          </div>
+          <span class="card-badge info">Moderate</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-cyan" id="cardPollenVal">42</span>
+            <div class="stat-meta-col">
+              <strong>Tree & Grass Pollen Count</strong>
+              <span>Keep bedroom windows closed in morning</span>
+            </div>
+          </div>
+          <div class="allergen-breakdown-row">
+            <div class="allergen-chip"><span>🌲 Tree: Low</span></div>
+            <div class="allergen-chip highlight"><span>🌾 Grass: Moderate</span></div>
+            <div class="allergen-chip"><span>🌿 Weed: Low</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Humidity & Respiratory / Eczema Sensitivity (PS 26076 & Screenshot 2) -->
+      <div class="weather-card health-card" data-card="health_humidity" id="cardHealthHumidity">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">💧</span>
+            <h3>Humidity & Asthma Sensitivity</h3>
+          </div>
+          <span class="card-badge info" id="cardHumidityBadge">Muggy</span>
+        </div>
+        <div class="card-body">
+          <div class="humidity-slider-box">
+            <div class="humidity-header-row">
+              <span class="big-number text-teal" id="cardHumidityVal">76%</span>
+              <span class="humidity-status-tag" id="cardHumidityStatus">Muggy (High Moisture)</span>
+            </div>
+            <div class="humidity-track-wrap">
+              <div class="humidity-gradient-bar">
+                <div class="humidity-thumb-indicator" id="cardHumidityThumb" style="left: 76%;"></div>
+              </div>
+              <div class="humidity-ticks">
+                <span>Dry (0%)</span>
+                <span>Ideal (45%)</span>
+                <span>Muggy (70%)</span>
+                <span>Oppressive</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-advice" style="margin-top: 10px;">High humidity may trigger respiratory constriction. Keep inhaler on hand.</p>
+        </div>
+      </div>
+
+      <!-- ================= 2. OUTDOOR FITNESS CARDS ================= -->
+      <!-- Best Running Hours Window -->
+      <div class="weather-card fitness-card" data-card="best_running_hours" id="cardBestRunning">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🏃</span>
+            <h3>Best Running & Workout Hours</h3>
+          </div>
+          <span class="card-badge success">Prime Window</span>
+        </div>
+        <div class="card-body">
+          <div class="running-window-box">
+            <div class="window-slot">
+              <span class="window-badge morning">🌅 Morning Window</span>
+              <strong class="window-time">05:45 AM – 07:30 AM</strong>
+              <p>Optimal cool temperature (21°C) and lowest AQI levels.</p>
+            </div>
+            <div class="window-slot" style="margin-top: 8px;">
+              <span class="window-badge evening">🌇 Evening Window</span>
+              <strong class="window-time">06:00 PM – 07:30 PM</strong>
+              <p>Post-sunset cool breeze, safe thermal comfort.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Astronomical Sun Arc -->
+      <div class="weather-card fitness-card" data-card="sun_arc" id="cardSunArc">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌅</span>
+            <h3>Sunrise & Sunset Schedule</h3>
+          </div>
+          <span class="card-badge neutral">Astronomical Arc</span>
+        </div>
+        <div class="card-body sun-arc-body">
+          <div class="sun-times-row">
+            <div class="sun-item">
+              <span class="label">Sunrise</span>
+              <strong id="cardSunrise">05:35 AM</strong>
+            </div>
+            <div class="sun-arc-graphic">
+              <div class="arc-curve"></div>
+              <div class="sun-dot" style="left: 65%;">☀️</div>
+            </div>
+            <div class="sun-item">
+              <span class="label">Sunset</span>
+              <strong id="cardSunset">05:52 PM</strong>
+            </div>
+          </div>
+          <p class="card-advice" style="margin-top: 8px; text-align: center;">Daylight duration: 12h 17m • Golden hour: 05:15 PM</p>
+        </div>
+      </div>
+
+      <!-- Wind Speed & Heat Alerts for Fitness (PS 26076 & Screenshot 2) -->
+      <div class="weather-card fitness-card" data-card="fitness_heat_wind" id="cardFitnessHeatWind">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">💨</span>
+            <h3>Wind Speed & Heat Stress Alerts</h3>
+          </div>
+          <span class="card-badge success" id="cardFitnessHeatBadge">Low Heat Risk</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-cyan" id="cardFitnessWindVal">12 km/h</span>
+            <div class="stat-meta-col">
+              <strong>Light Runner's Breeze</strong>
+              <span>Headwind negligible on running track.</span>
+            </div>
+          </div>
+          <div class="fitness-thermal-row">
+            <div class="thermal-chip"><span>🌡️ Heat Index: 32°C</span></div>
+            <div class="thermal-chip"><span>💧 Hydration: 500ml/hr</span></div>
+            <div class="thermal-chip success"><span>🛡️ Heat Stroke: Safe</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 3. BEACHGOERS & SURFERS CARDS ================= -->
+      <!-- Sea Conditions & Beach Safety Flags (PS 26076) -->
+      <div class="weather-card beach-card" data-card="sea_conditions" id="cardSeaConditions">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🚩</span>
+            <h3>Sea Conditions & Coastal Safety</h3>
+          </div>
+          <span class="card-badge success" id="cardBeachFlagBadge">🟢 Green Flag (Safe)</span>
+        </div>
+        <div class="card-body">
+          <div class="coastal-condition-box">
+            <div class="coastal-main-status">
+              <span class="big-status-text text-green">Calm to Moderate Waters</span>
+              <p>Lifeguard patrols active. Swimming safe in designated zones.</p>
+            </div>
+            <div class="rip-current-bar">
+              <div class="rip-label">Rip Current Danger: <strong>Low</strong></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width: 25%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tide Timings -->
+      <div class="weather-card beach-card" data-card="tides" id="cardTides">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌊</span>
+            <h3>Tide Timings & Coastal Cycles</h3>
+          </div>
+          <span class="card-badge info">Tide Schedule</span>
+        </div>
+        <div class="card-body">
+          <div class="tide-row">
+            <div class="tide-col">
+              <span class="tide-sub">High Tide</span>
+              <strong>11:20 AM (2.1 m)</strong>
+            </div>
+            <div class="tide-divider"></div>
+            <div class="tide-col">
+              <span class="tide-sub">Low Tide</span>
+              <strong>05:40 PM (0.6 m)</strong>
+            </div>
+          </div>
+          <p class="card-advice" style="margin-top: 10px;">Safe beachcombing & shore walks during receding tide window.</p>
+        </div>
+      </div>
+
+      <!-- Wave Swell Height & Water Temperature (PS 26076) -->
+      <div class="weather-card beach-card" data-card="wave_swell" id="cardWaveSwell">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🏄</span>
+            <h3>Wave Swell & Water Temperature</h3>
+          </div>
+          <span class="card-badge success">Surf: Good</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-cyan" id="cardWaveVal">1.8 m</span>
+            <div class="stat-meta-col">
+              <strong>Water Temp: 27°C (Warm)</strong>
+              <span>Swell Period: 11s • Clean breaks</span>
+            </div>
+          </div>
+          <div class="water-gear-suggestion">
+            <span>🤿 Wetsuit: Rashguard or shorty recommended. Safe surfing window.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 4. TRAVELERS CARDS ================= -->
+      <!-- Saved Destinations Quick Access (PS 26076) -->
+      <div class="weather-card travel-card" data-card="saved_destinations" id="cardSavedDestinations">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌍</span>
+            <h3>Saved Travel Destinations</h3>
+          </div>
+          <span class="card-badge info">5 Cities</span>
+        </div>
+        <div class="card-body">
+          <div class="saved-destinations-grid">
+            <div class="dest-item" data-dest-city="London" data-dest-lat="51.5074" data-dest-lon="-0.1278">
+              <div class="dest-city-row"><strong>London</strong><span>🌧️ 16°C</span></div>
+              <span class="dest-sub">Rain Alert • Raincoat Needed</span>
+            </div>
+            <div class="dest-item" data-dest-city="Mumbai" data-dest-lat="19.0760" data-dest-lon="72.8777">
+              <div class="dest-city-row"><strong>Mumbai</strong><span>⛅ 28°C</span></div>
+              <span class="dest-sub">Humid • Smooth Flight</span>
+            </div>
+            <div class="dest-item" data-dest-city="Dubai" data-dest-lat="25.2048" data-dest-lon="55.2708">
+              <div class="dest-city-row"><strong>Dubai</strong><span>☀️ 38°C</span></div>
+              <span class="dest-sub">Extreme UV • Sun Protection</span>
+            </div>
+            <div class="dest-item" data-dest-city="Goa" data-dest-lat="15.2993" data-dest-lon="74.1240">
+              <div class="dest-city-row"><strong>Goa</strong><span>🏖️ 29°C</span></div>
+              <span class="dest-sub">Coastal Breeze • Clear</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flight Disruption & Severe Weather Alerts (PS 26076) -->
+      <div class="weather-card travel-card" data-card="flight_risk" id="cardFlightRiskBox">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">✈️</span>
+            <h3>Flight Delays & Airport Weather</h3>
+          </div>
+          <span class="card-badge success" id="cardFlightBadge">Low Delay Risk</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-green" id="cardFlightRisk">12%</span>
+            <div class="stat-meta-col">
+              <strong>Airport Visibility: 4.5 km</strong>
+              <span>Smooth departure across domestic airports.</span>
+            </div>
+          </div>
+          <div class="airport-status-chips">
+            <span class="airport-chip ontime">DEL: On Time</span>
+            <span class="airport-chip ontime">PAT: On Time</span>
+            <span class="airport-chip delay">LHR: +25m Rain</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Packing Suggestions (PS 26076: 'Carry a raincoat in London') -->
+      <div class="weather-card travel-card" data-card="packing_suggestions" id="cardPackingSuggestions">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🎒</span>
+            <h3>Smart Packing & Luggage Advice</h3>
+          </div>
+          <span class="card-badge neutral">AI Curated</span>
+        </div>
+        <div class="card-body">
+          <div class="packing-tip-main">
+            <strong class="packing-headline" id="packingHeadline">🌧️ Traveling to London? Carry a Raincoat!</strong>
+            <p id="cardPackingTip">Intermittent drizzle and 16°C damp air forecasted in London. Pack a waterproof hooded raincoat, compact umbrella, and light layering fleece.</p>
+          </div>
+          <div class="packing-checklist">
+            <div class="pack-check-item">✅ Waterproof Raincoat</div>
+            <div class="pack-check-item">✅ Breathable Cotton Layer</div>
+            <div class="pack-check-item">✅ UV Sunglasses</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 5. PARENTS & FAMILIES CARDS ================= -->
+      <!-- School Commute Conditions (PS 26076) -->
+      <div class="weather-card family-card" data-card="school_commute" id="cardSchoolCommute">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🚌</span>
+            <h3>School Commute (7:00 AM – 9:00 AM)</h3>
+          </div>
+          <span class="card-badge success">Clear Commute</span>
+        </div>
+        <div class="card-body">
+          <div class="commute-status-box">
+            <div class="commute-time-row">
+              <div class="commute-slot">
+                <span class="commute-label">Morning Drop-off</span>
+                <strong>7:00 – 8:30 AM</strong>
+                <span class="status-pill clear">☀️ Dry Roads (24°C)</span>
+              </div>
+              <div class="commute-slot">
+                <span class="commute-label">Afternoon Pick-up</span>
+                <strong>1:30 – 3:30 PM</strong>
+                <span class="status-pill clear">⛅ Moderate Heat (31°C)</span>
+              </div>
+            </div>
+            <p class="card-advice" style="margin-top: 10px;">No rain or fog disruptions expected for school bus routes today.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rain Alerts & Outdoor Routine (PS 26076) -->
+      <div class="weather-card family-card" data-card="family_rain_alerts" id="cardFamilyRain">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">☔</span>
+            <h3>Family Rain Alerts & Playground Safety</h3>
+          </div>
+          <span class="card-badge info" id="familyRainBadge">Low Rain Chance</span>
+        </div>
+        <div class="card-body">
+          <div class="hourly-rain-mini-timeline">
+            <div class="rain-step"><span>8 AM</span><strong>5%</strong></div>
+            <div class="rain-step"><span>11 AM</span><strong>10%</strong></div>
+            <div class="rain-step"><span>2 PM</span><strong>15%</strong></div>
+            <div class="rain-step highlight"><span>5 PM</span><strong>25%</strong></div>
+            <div class="rain-step"><span>8 PM</span><strong>10%</strong></div>
+          </div>
+          <p class="card-advice" style="margin-top: 10px;">Safe for children to play outdoors until 5:00 PM. Keep an umbrella handy for evening visits.</p>
+        </div>
+      </div>
+
+      <!-- Severe Weather Warnings for Families (PS 26076) -->
+      <div class="weather-card family-card" data-card="severe_weather_warnings" id="cardFamilyWarnings">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🛡️</span>
+            <h3>Child Routine & Severe Weather Warnings</h3>
+          </div>
+          <span class="card-badge success">All Clear</span>
+        </div>
+        <div class="card-body">
+          <div class="warning-alert-row">
+            <div class="warning-item green">
+              <span>⚡ Thunderstorm Risk: <strong>Nil</strong></span>
+            </div>
+            <div class="warning-item green">
+              <span>🔥 Heatwave School Alert: <strong>Normal</strong></span>
+            </div>
+            <div class="warning-item amber">
+              <span>☀️ Midday Sun: <strong>Limit play 12-2 PM</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 6. AGRICULTURE & GARDENERS CARDS ================= -->
+      <!-- Soil Moisture Level (PS 26076) -->
+      <div class="weather-card agri-card" data-card="soil_moisture" id="cardSoilMoisture">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌱</span>
+            <h3>मिट्टी में नमी (Soil Moisture Level)</h3>
+          </div>
+          <span class="card-badge success">उत्तम (Optimal)</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-green" id="cardSoilVal">44%</span>
+            <div class="stat-meta-col">
+              <strong>Volumetric Water Content (VWC)</strong>
+              <span>जड़ों के पोषण के लिए पर्याप्त नमी उपलब्ध है।</span>
+            </div>
+          </div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width: 68%;"></div></div>
+          <p class="card-advice" style="margin-top: 10px;">💧 सिंचाई परामर्श: अगले 48 घंटों तक सिंचाई रोकने की सलाह दी जाती है।</p>
+        </div>
+      </div>
+
+      <!-- 5-Day Rainfall Predictions for Agriculture (PS 26076) -->
+      <div class="weather-card agri-card" data-card="rain_prediction" id="cardAgriRain">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌧️</span>
+            <h3>5-दिन वर्षा पूर्वानुमान (Rainfall Prediction)</h3>
+          </div>
+          <span class="card-badge info">कृषि मौसम परामर्श</span>
+        </div>
+        <div class="card-body">
+          <div class="agri-rain-forecast">
+            <div class="agri-day-item"><span>आज</span><strong>0 mm</strong></div>
+            <div class="agri-day-item"><span>कल</span><strong>2 mm</strong></div>
+            <div class="agri-day-item highlight"><span>गुरु</span><strong>24 mm</strong></div>
+            <div class="agri-day-item highlight"><span>शुक्र</span><strong>18 mm</strong></div>
+            <div class="agri-day-item"><span>शनि</span><strong>4 mm</strong></div>
+          </div>
+          <p class="card-advice" style="margin-top: 10px;">⚠️ गुरुवार को भारी वर्षा की संभावना। कटी हुई फसल को बुधवार शाम तक सुरक्षित स्थान पर रखें।</p>
+        </div>
+      </div>
+
+      <!-- Frost Alerts & Cold Wave (PS 26076) -->
+      <div class="weather-card agri-card" data-card="frost_alert" id="cardFrostAlert">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">❄️</span>
+            <h3>पाला व ठंड चेतावनी (Frost Alert)</h3>
+          </div>
+          <span class="card-badge success">सुरक्षित (No Frost)</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-teal">18°C</span>
+            <div class="stat-meta-col">
+              <strong>न्यूनतम जमीनी तापमान</strong>
+              <span>फसलों को पाले या ठंड से कोई नुकसान का खतरा नहीं है।</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seasonal Planting Guidance (PS 26076) -->
+      <div class="weather-card agri-card" data-card="seasonal_planting" id="cardSeasonalPlanting">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🌾</span>
+            <h3>मौसमी बुवाई एवं फसल सुरक्षा (Planting Guidance)</h3>
+          </div>
+          <span class="card-badge success">सक्रिय परामर्श</span>
+        </div>
+        <div class="card-body">
+          <div class="agri-crop-calendar">
+            <div class="crop-advice-item">
+              <strong>🌱 खरीफ/रबी बुवाई:</strong>
+              <span>मिट्टी में पर्याप्त नमी है, दलहन एवं तिलहन बुवाई के लिए मौसम बिल्कुल उपयुक्त।</span>
+            </div>
+            <div class="crop-advice-item" style="margin-top: 8px;">
+              <strong>🧪 कीटनाशक छिड़काव:</strong>
+              <span>हवा की गति 11 किमी/घंटे सामान्य है। छिड़काव सुबह 10 बजे से पहले पूरा करें।</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 7. COMMUTERS CARDS ================= -->
+      <!-- Weather-Traffic Integration (PS 26076) -->
+      <div class="weather-card commuter-card" data-card="traffic_weather_integration" id="cardTrafficWeather">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🚦</span>
+            <h3>Weather & Traffic Flow Integration</h3>
+          </div>
+          <span class="card-badge success">Traffic: Smooth</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-green">0%</span>
+            <div class="stat-meta-col">
+              <strong>Weather Travel Delay Index</strong>
+              <span>Zero waterlogging or slick road hazards reported.</span>
+            </div>
+          </div>
+          <div class="route-speed-status">
+            <div class="route-item"><span>Inner Ring Road:</span> <strong>Normal Speed (50 km/h)</strong></div>
+            <div class="route-item"><span>National Highway:</span> <strong>Dry & Clear (80 km/h)</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Road Visibility & Fog Distance (PS 26076) -->
+      <div class="weather-card commuter-card" data-card="visibility_traffic" id="cardVisibility">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🚗</span>
+            <h3>Road Visibility & Fog Distance</h3>
+          </div>
+          <span class="card-badge info">Normal Visibility</span>
+        </div>
+        <div class="card-body">
+          <div class="stat-highlight-row">
+            <span class="big-number text-cyan" id="cardVisibilityVal">3.5 km</span>
+            <div class="stat-meta-col">
+              <strong>Atmosphere: Mild Haze</strong>
+              <span>Fog risk is Nil on highway ring roads.</span>
+            </div>
+          </div>
+          <p class="card-advice" style="margin-top: 8px;">Clear peripheral vision across major intersections and flyovers.</p>
+        </div>
+      </div>
+
+      <!-- Commuter Storm & Fog Alerts (PS 26076) -->
+      <div class="weather-card commuter-card" data-card="commuter_storm_alerts" id="cardCommuterAlerts">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">⚠️</span>
+            <h3>Storm, Fog & Crosswind Transit Alerts</h3>
+          </div>
+          <span class="card-badge success">Safe Commute</span>
+        </div>
+        <div class="card-body">
+          <div class="transit-alerts-list">
+            <div class="transit-alert-item safe">
+              <span>🌉 Bridge Crosswinds: <strong>Safe (12 km/h)</strong></span>
+            </div>
+            <div class="transit-alert-item safe">
+              <span>🌫️ Dense Fog Hazard: <strong>No Fog Advisory</strong></span>
+            </div>
+            <div class="transit-alert-item safe">
+              <span>🚆 Metro / Rail Transit: <strong>100% On-Time</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 8. EVENT PLANNERS CARDS ================= -->
+      <!-- Outdoor Comfort Index (PS 26076) -->
+      <div class="weather-card event-card" data-card="event_comfort" id="cardEventComfort">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">🎉</span>
+            <h3>Outdoor Comfort Index (Weddings & Gatherings)</h3>
+          </div>
+          <span class="card-badge success">84 / 100</span>
+        </div>
+        <div class="card-body">
+          <div class="comfort-index-display">
+            <div class="big-score-box">
+              <span class="big-number text-green">84</span>
+              <span class="score-label">Excellent Outdoor Weather</span>
+            </div>
+            <p>Ideal conditions for lawn weddings, receptions, and open-air dinners between 4:00 PM and 11:00 PM. Gentle breeze and comfortable thermal index.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Probability of Rain for Gatherings (PS 26076) -->
+      <div class="weather-card event-card" data-card="event_rain_probability" id="cardEventRain">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">☔</span>
+            <h3>Evening Rain Probability (4 PM – 11 PM)</h3>
+          </div>
+          <span class="card-badge success">12% Max</span>
+        </div>
+        <div class="card-body">
+          <div class="event-rain-timeline">
+            <div class="event-time-col"><span>4 PM</span><strong>8%</strong></div>
+            <div class="event-time-col"><span>6 PM</span><strong>10%</strong></div>
+            <div class="event-time-col"><span>8 PM</span><strong>12%</strong></div>
+            <div class="event-time-col"><span>10 PM</span><strong>8%</strong></div>
+            <div class="event-time-col"><span>11 PM</span><strong>5%</strong></div>
+          </div>
+          <p class="card-advice" style="margin-top: 10px;">Waterproof canopy optional. Outdoor illumination & acoustic staging safe.</p>
+        </div>
+      </div>
+
+      <!-- ================= UNIVERSAL / EXTENDED FORECAST ================= -->
+      <!-- 7-Day Synoptic Weather Forecast (Target for Voice Navigation!) -->
+      <div class="weather-card full-width-card" data-card="extended_forecast" id="cardExtendedForecast">
+        <div class="card-head">
+          <div class="card-title-box">
+            <span class="card-icon">📅</span>
+            <h3>7-Day Synoptic Weather Forecast</h3>
+          </div>
+          <span class="card-badge neutral">IMD Multi-Day Model Feed</span>
+        </div>
+        <div class="card-body">
+          <div class="forecast-days-list" id="forecastDaysList"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- 4. FLOATING MEGHA VOICE COMPANION & CONVERSATION DRAWER     -->
+  <!-- ============================================================ -->
+  <aside id="meghaChatDrawer" class="chat-drawer">
+    <div class="chat-drawer-header">
+      <div class="drawer-brand">
+        <img id="drawerAvatarFace" class="drawer-avatar-face" src="assets/avatar/avatar_badge.png" alt="Megha Avatar" />
+        <div>
+          <h4>Mausam Mitra (Megha)</h4>
+          <span class="online-indicator">🟢 AI Voice Companion Ready</span>
+        </div>
+      </div>
+      
+      <!-- Voice Language Selector Option in Chat Drawer -->
+      <div class="voice-lang-picker">
+        <span class="lang-picker-label">🗣️ Voice:</span>
+        <button id="langHindiBtn" class="lang-toggle-btn active" title="Speak in Hindi">हिंदी</button>
+        <button id="langEnglishBtn" class="lang-toggle-btn" title="Speak in English">English</button>
+      </div>
+
+      <button id="closeChatDrawerBtn" class="icon-btn">&times;</button>
+    </div>
+
+    <div class="chat-messages-container" id="chatMessages">
+      <div class="chat-bubble bot-bubble">
+        <p>Namaste! Main Megha hoon. Aap mujhse mausam ke baare me kuch bhi pooch sakte hain ya kisi feature par navigate karne ko bol sakte hain.</p>
+        <div class="quick-chips">
+          <button class="chip-query" data-query="kheti ki barish dikhao">🌾 Kheti & Baarish</button>
+          <button class="chip-query" data-query="running window dikhao">🏃 Running Window</button>
+          <button class="chip-query" data-query="cyclone alert hai kya">🌀 Cyclone Alert</button>
+          <button class="chip-query" data-query="AQI check karo">🍃 AQI Status</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Voice/Text Input Bar -->
+    <div class="chat-input-bar">
+      <button id="micVoiceBtn" class="mic-btn" title="Tap to speak">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <input type="text" id="chatTextInput" placeholder="Boliye ya type karein (e.g. Kheti ki barish dikhao)..." />
+      <button id="sendChatBtn" class="send-btn">➔</button>
+    </div>
+  </aside>
+
+  <!-- Floating Megha Trigger Button (Bottom Right) -->
+  <div id="floatingMeghaTrigger" class="floating-megha-btn">
+    <div class="floating-avatar-cutout">
+      <img id="floatingMeghaImg" src="assets/avatar/megha_idle_transparent.png" alt="Megha Assistant" />
+    </div>
+    <span class="floating-label">Ask Megha</span>
+    <span class="floating-ping"></span>
+  </div>
+
+  <!-- Side Menu Navigation Drawer -->
+  <aside id="sideMenuDrawer" class="side-menu-drawer">
+    <div class="side-menu-head">
+      <img src="assets/avatar/avatar_badge.png" class="menu-avatar" alt="Avatar" />
+      <h3>Mausam Mitra</h3>
+      <button id="closeSideMenuBtn" class="icon-btn">&times;</button>
+    </div>
+    <div class="side-menu-body">
+      <div class="menu-group">
+        <h4>Personas (MoES/IMD PS 26076)</h4>
+        <button class="menu-item" data-switch-persona="health_conscious">🌿 Health-conscious</button>
+        <button class="menu-item" data-switch-persona="fitness">🏃 Outdoor Fitness</button>
+        <button class="menu-item" data-switch-persona="beachgoers_surfers">🏄 Beachgoers & Surfers</button>
+        <button class="menu-item" data-switch-persona="travelers">✈️ Travelers</button>
+        <button class="menu-item" data-switch-persona="parents_families">👨‍👩‍👧 Parents & Families</button>
+        <button class="menu-item" data-switch-persona="agriculture_gardeners">🌾 Agriculture & Gardeners</button>
+        <button class="menu-item" data-switch-persona="commuters">🚗 Commuters</button>
+        <button class="menu-item" data-switch-persona="event_planners">🎉 Event Planners</button>
+      </div>
+
+      <div class="menu-group">
+        <h4>Official IMD Services</h4>
+        <a href="https://mausam.imd.gov.in" target="_blank" class="menu-link">🌐 IMD Mausam Web Portal</a>
+        <a href="https://play.google.com/store/apps/details?id=com.imd.masuam" target="_blank" class="menu-link">📱 IMD Mausam Mobile App</a>
+        <a href="https://play.google.com/store/apps/details?id=com.aas.meghdoot" target="_blank" class="menu-link">🌾 Meghdoot Agro Weather App</a>
+        <a href="https://play.google.com/store/apps/details?id=com.lightening.damini" target="_blank" class="menu-link">⚡ Damini Lightning Alert App</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- External Script -->
+  <script src="script.js"></script>
+</body>
+</html>
