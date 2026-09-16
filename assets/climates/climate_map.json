@@ -1,0 +1,155 @@
+{
+  "description": "Mausam Mitra Climate Header Background Images Mapping",
+  "aspect_ratio": "16:9 Landscape (1376x768)",
+  "format": "JPG",
+  "base_path": "assets/climates/",
+  "climates": {
+    "clear_day": {
+      "name": "Clear / Sunny Day",
+      "file": "clear_day.jpg",
+      "wmo_codes": [0],
+      "is_day": 1,
+      "description": "Brilliant golden sun with lens flare in deep azure blue sky"
+    },
+    "clear_night": {
+      "name": "Clear Night / Starry Sky",
+      "file": "clear_night.jpg",
+      "wmo_codes": [0],
+      "is_day": 0,
+      "description": "Deep midnight indigo sky with glowing crescent moon and milky way stars"
+    },
+    "mainly_clear": {
+      "name": "Mainly Clear",
+      "file": "mainly_clear.jpg",
+      "wmo_codes": [1],
+      "is_day": 1,
+      "description": "Brilliant bright sun with thin, light wispy cirrus clouds in bright blue sky"
+    },
+    "partly_cloudy": {
+      "name": "Partly Cloudy",
+      "file": "partly_cloudy.jpg",
+      "wmo_codes": [2],
+      "description": "Volumetric white cumulus clouds with sun rays breaking through blue sky"
+    },
+    "generally_cloudy": {
+      "name": "Generally Cloudy",
+      "file": "generally_cloudy.jpg",
+      "wmo_codes": [3],
+      "description": "Seamless overcast layer of silver-grey stratocumulus clouds with soft diffuse light"
+    },
+    "cloudy": {
+      "name": "Cloudy",
+      "file": "cloudy.jpg",
+      "wmo_codes": [3],
+      "description": "Rich, dense layers of textured cumulus and altocumulus clouds in silver and charcoal"
+    },
+    "overcast": {
+      "name": "Overcast",
+      "file": "overcast.jpg",
+      "wmo_codes": [3],
+      "description": "Dense textured silver and charcoal overcast storm clouds filling the sky"
+    },
+    "drizzle": {
+      "name": "Drizzle",
+      "file": "drizzle.jpg",
+      "wmo_codes": [51, 53, 55],
+      "description": "Delicate fine misty light rain streaks falling softly through cool grey overcast sky"
+    },
+    "moderate_rain": {
+      "name": "Moderate Rain / Showers",
+      "file": "moderate_rain.jpg",
+      "wmo_codes": [61, 63, 80, 81],
+      "description": "Steady vertical streaks of rain falling from gloomy grey-blue clouds"
+    },
+    "heavy_rain": {
+      "name": "Heavy Rain / Monsoon Downpour",
+      "file": "heavy_rain.jpg",
+      "wmo_codes": [65, 82],
+      "description": "Torrential diagonal rain pouring intensely from dark stormy clouds"
+    },
+    "thunderstorm": {
+      "name": "Thunderstorm / Lightning",
+      "file": "thunderstorm.jpg",
+      "wmo_codes": [95, 96, 99],
+      "description": "Dramatic violet-indigo storm clouds with brilliant electric lightning fork"
+    },
+    "squall_winds": {
+      "name": "Squall / Gusty Winds",
+      "file": "squall_winds.jpg",
+      "wmo_codes": [18],
+      "description": "Fast-moving ragged dark scud clouds whipped by intense wind shear and turbulence"
+    },
+    "fog": {
+      "name": "Fog / Shallow Fog",
+      "file": "fog.jpg",
+      "wmo_codes": [45],
+      "description": "Dense white-grey mist with a pale diffuse sun glowing through"
+    },
+    "dense_fog": {
+      "name": "Dense Fog",
+      "file": "dense_fog.jpg",
+      "wmo_codes": [48],
+      "description": "Thick opaque blanket of dense fog with near-zero visibility and diffused milky lighting"
+    },
+    "haze": {
+      "name": "Haze / Smog",
+      "file": "haze.jpg",
+      "wmo_codes": [5],
+      "description": "Warm brownish-yellow atmospheric particulate smog and haze with dim diffused sun"
+    },
+    "cold_wave": {
+      "name": "Cold Wave",
+      "file": "cold_wave.jpg",
+      "wmo_codes": [],
+      "description": "Freezing subzero steel-blue sky with shimmering diamond dust ice crystals and chill halo"
+    },
+    "ground_frost": {
+      "name": "Ground Frost",
+      "file": "ground_frost.jpg",
+      "wmo_codes": [],
+      "description": "Crisp subzero early morning sky with delicate crystalline frost patterns and dawn rays"
+    },
+    "snow": {
+      "name": "Snow / Snowfall",
+      "file": "snow.jpg",
+      "wmo_codes": [71, 73, 85],
+      "description": "Soft white crystalline snowflakes gently falling through cold winter clouds"
+    },
+    "heavy_snowfall": {
+      "name": "Heavy Snowfall / Blizzard",
+      "file": "heavy_snowfall.jpg",
+      "wmo_codes": [75, 86],
+      "description": "Heavy whiteout blizzard snowfall with dense clusters of large flakes and steel-grey clouds"
+    },
+    "heat_wave": {
+      "name": "Heat Wave",
+      "file": "heat_wave.jpg",
+      "wmo_codes": [],
+      "description": "Blazing white-hot sun with intense heat shimmer distortion ripples"
+    },
+    "severe_heat_wave": {
+      "name": "Severe Heat Wave",
+      "file": "severe_heat_wave.jpg",
+      "wmo_codes": [],
+      "description": "Extreme blistering white-hot sun in deep fiery red-orange thermal atmosphere with mirage waves"
+    },
+    "dust_storm": {
+      "name": "Dust Storm / Andhi",
+      "file": "dust_storm.jpg",
+      "wmo_codes": [6, 7, 8, 9],
+      "description": "Violent swirling ochre and amber dust storm clouds obscuring the sun"
+    },
+    "cyclone": {
+      "name": "Cyclone Eye",
+      "file": "cyclone.jpg",
+      "wmo_codes": [],
+      "description": "Monstrous spiral vortex storm walls looking up into the eye of the cyclone"
+    },
+    "cyclonic_storm": {
+      "name": "Cyclonic Storm",
+      "file": "cyclonic_storm.jpg",
+      "wmo_codes": [],
+      "description": "Massive swirling dark teal hurricane outer rainbands rotating ferociously with torrential squall"
+    }
+  }
+}
