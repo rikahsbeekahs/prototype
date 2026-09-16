@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <radialGradient id="dustBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2c1a0e"/>
+      <stop offset="100%" stop-color="#0b132b"/>
+    </radialGradient>
+    <linearGradient id="sandStream1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#b45309" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="sandStream2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b45309" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#d97706" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#fde68a" stop-opacity="0.4"/>
+    </linearGradient>
+    <filter id="dustBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded card -->
+  <rect width="512" height="512" rx="96" fill="url(#dustBg)"/>
+
+  <!-- Dimmed Sun obscured by dust -->
+  <circle cx="210" cy="170" r="70" fill="#f59e0b" opacity="0.35" filter="url(#dustBlur)"/>
+
+  <!-- Sweeping Sand Dunes at Base -->
+  <path d="M 48 440 Q 180 390 320 430 T 464 420 L 464 464 C 464 480 440 496 410 496 L 102 496 C 72 496 48 480 48 464 Z" fill="#78350f" opacity="0.85"/>
+  <path d="M 48 460 Q 220 410 464 450 L 464 464 C 464 480 440 496 410 496 L 102 496 C 72 496 48 480 48 464 Z" fill="#92400e" opacity="0.6"/>
+
+  <!-- High-velocity Swirling Dust Vortex Streams -->
+  <path d="M 64 220 C 180 180 380 140 430 200 C 470 250 350 280 230 260 C 140 245 100 290 140 330 C 180 365 340 340 448 310" 
+        fill="none" stroke="url(#sandStream1)" stroke-width="22" stroke-linecap="round" filter="url(#dustBlur)"/>
+
+  <path d="M 96 160 C 220 130 360 100 410 150 C 450 190 320 220 200 210 C 100 200 130 260 210 270 C 310 285 410 260 464 240" 
+        fill="none" stroke="url(#sandStream2)" stroke-width="14" stroke-linecap="round"/>
+
+  <path d="M 48 280 C 140 270 280 240 380 290 C 440 320 380 370 260 360 C 170 350 120 390 180 410 C 240 425 360 390 430 370" 
+        fill="none" stroke="url(#sandStream1)" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Suspended airborne particulate / sand particles -->
+  <g fill="#fde68a" opacity="0.8">
+    <circle cx="160" cy="140" r="5"/>
+    <circle cx="280" cy="110" r="4"/>
+    <circle cx="340" cy="180" r="6"/>
+    <circle cx="120" cy="240" r="4"/>
+    <circle cx="270" cy="230" r="5"/>
+    <circle cx="390" cy="250" r="6"/>
+    <circle cx="180" cy="300" r="5"/>
+    <circle cx="310" cy="320" r="4"/>
+    <circle cx="430" cy="350" r="5"/>
+    <circle cx="90" cy="340" r="4"/>
+    <circle cx="240" cy="380" r="5"/>
+  </g>
+</svg>
